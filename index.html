@@ -14,6 +14,7 @@
   --card:#ffffff;
   --line:#eadfea;
   --shadow:0 10px 30px rgba(80,30,60,.08);
+  --dark:rgba(22,16,25,.52);
 }
 
 *{box-sizing:border-box}
@@ -84,16 +85,16 @@ header{
   transition:.2s ease;
 }
 
-.langs button:hover{
-  transform:translateY(-1px);
-  border-color:var(--pink2);
-}
-
 .langs button.active,
 .primary{
   background:var(--pink);
   color:#fff;
   border-color:var(--pink);
+}
+
+.langs button:hover,
+.primary:hover{
+  transform:translateY(-1px);
 }
 
 main{
@@ -113,8 +114,12 @@ main{
   overflow:hidden;
 }
 
+figure{
+  margin:0;
+}
+
 .media{
-  min-height:540px;
+  min-height:560px;
   position:relative;
   display:flex;
   align-items:center;
@@ -129,7 +134,7 @@ main{
   color:#b25b84;
   text-align:center;
   max-width:80%;
-  background:rgba(255,255,255,.5);
+  background:rgba(255,255,255,.62);
   backdrop-filter:blur(4px);
 }
 
@@ -145,8 +150,8 @@ main{
   line-height:1.6;
 }
 
-.media img,
-.media video{
+.media img.preview-media,
+.media video.preview-media{
   position:absolute;
   inset:0;
   width:100%;
@@ -155,14 +160,64 @@ main{
   display:none;
 }
 
+.media-overlay{
+  position:absolute;
+  left:20px;
+  right:20px;
+  top:20px;
+  z-index:3;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+  pointer-events:none;
+}
+
+.overlay-badge{
+  max-width:min(72%, 620px);
+  background:var(--dark);
+  color:#fff;
+  padding:14px 16px;
+  border-radius:18px;
+  backdrop-filter:blur(6px);
+  box-shadow:0 8px 24px rgba(0,0,0,.12);
+}
+
+.overlay-badge .name{
+  display:block;
+  font-size:30px;
+  font-weight:800;
+  line-height:1.05;
+  letter-spacing:.2px;
+}
+
+.overlay-badge .caption{
+  display:block;
+  margin-top:6px;
+  font-size:16px;
+  line-height:1.35;
+  color:#f6edf2;
+}
+
+.overlay-location{
+  background:rgba(234,46,127,.92);
+  color:#fff;
+  padding:10px 14px;
+  border-radius:999px;
+  font-weight:800;
+  font-size:14px;
+  white-space:nowrap;
+  box-shadow:0 8px 20px rgba(234,46,127,.2);
+}
+
 .watermark{
   position:absolute;
-  right:18px;
-  bottom:18px;
-  width:150px;
+  right:16px;
+  bottom:16px;
+  width:160px;
   opacity:.18;
   pointer-events:none;
-  filter:saturate(.9);
+  z-index:2;
 }
 
 .panel{
@@ -213,11 +268,6 @@ button.primary{
   transition:.2s ease;
 }
 
-button.primary:hover{
-  transform:translateY(-1px);
-  background:#d82671;
-}
-
 .preview{
   margin-top:18px;
   padding:16px;
@@ -237,7 +287,7 @@ button.primary:hover{
   margin-bottom:10px;
 }
 
-.caption{
+.caption-text{
   white-space:pre-wrap;
   line-height:1.6;
   color:#4b4550;
@@ -250,6 +300,10 @@ button.primary:hover{
   line-height:1.5;
 }
 
+.hidden{
+  display:none !important;
+}
+
 footer{
   max-width:1200px;
   margin:0 auto;
@@ -258,19 +312,21 @@ footer{
   font-size:13px;
 }
 
-.hidden{
-  display:none !important;
-}
-
 @media (max-width:900px){
   main{
     grid-template-columns:1fr;
   }
   .media{
-    min-height:360px;
+    min-height:380px;
   }
   .grid{
     grid-template-columns:1fr;
+  }
+  .overlay-badge .name{
+    font-size:22px;
+  }
+  .overlay-badge .caption{
+    font-size:14px;
   }
 }
 </style>
@@ -291,18 +347,30 @@ footer{
 
 <main>
   <section class="card media" aria-label="Media preview area">
-    <input id="file" type="file" accept="image/*,video/*" class="hidden">
-    <div class="placeholder" id="ph">
-      <h2 id="dropTitle">Upload image or video</h2>
-      <p id="dropText">
-        Choose a file to preview it on the browser, with logo watermark and caption preview.
-      </p>
-      <button class="primary" id="pick" type="button">Choose Media</button>
-    </div>
+    <figure style="width:100%;height:100%;position:relative;margin:0;">
+      <input id="file" type="file" accept="image/*,video/*" class="hidden">
 
-    <img id="previewImg" alt="Preview image">
-    <video id="previewVid" controls></video>
-    <img class="watermark" src="LOGO-4096.jpg" alt="Watermark logo">
+      <div class="placeholder" id="ph">
+        <h2 id="dropTitle">Upload image or video</h2>
+        <p id="dropText">
+          Choose a file to preview it on the browser, with logo watermark and caption preview.
+        </p>
+        <button class="primary" id="pick" type="button">Choose Media</button>
+      </div>
+
+      <img id="previewImg" class="preview-media" alt="Preview image">
+      <video id="previewVid" class="preview-media" controls></video>
+
+      <div class="media-overlay" id="mediaOverlay" style="display:none;">
+        <div class="overlay-badge">
+          <span class="name" id="ovName">Name</span>
+          <span class="caption" id="ovCaption">One-line caption appears here.</span>
+        </div>
+        <div class="overlay-location" id="ovPlace">Place</div>
+      </div>
+
+      <img class="watermark" src="LOGO-4096.jpg" alt="Watermark logo">
+    </figure>
   </section>
 
   <section class="card panel">
@@ -326,17 +394,17 @@ footer{
     <div class="preview">
       <h2 id="pvName">Name</h2>
       <div class="place" id="pvPlace">Place</div>
-      <p id="pvDesc" class="caption">Small detailed written post appears here.</p>
+      <p id="pvDesc" class="caption-text">Small detailed written post appears here.</p>
 
       <h3 id="captionHead">Caption</h3>
-      <div id="pvCaption" class="caption"></div>
+      <div id="pvCaption" class="caption-text"></div>
 
       <div class="actions">
         <button class="primary" id="copy" type="button">Copy Caption</button>
       </div>
 
       <p class="small">
-        The preview is designed for a static gallery post format with logo branding and multilingual output.
+        The on-media text stays short and clean, while the full caption is rephrased into a more polished travel story.
       </p>
     </div>
   </section>
@@ -413,6 +481,7 @@ const pick = document.getElementById('pick');
 const img = document.getElementById('previewImg');
 const vid = document.getElementById('previewVid');
 const ph = document.getElementById('ph');
+const overlay = document.getElementById('mediaOverlay');
 
 const nameEl = document.getElementById('name');
 const placeEl = document.getElementById('place');
@@ -427,6 +496,9 @@ const pvName = document.getElementById('pvName');
 const pvPlace = document.getElementById('pvPlace');
 const pvDesc = document.getElementById('pvDesc');
 const pvCaption = document.getElementById('pvCaption');
+const ovName = document.getElementById('ovName');
+const ovCaption = document.getElementById('ovCaption');
+const ovPlace = document.getElementById('ovPlace');
 const refreshBtn = document.getElementById('refresh');
 const copyBtn = document.getElementById('copy');
 
@@ -459,23 +531,39 @@ function setLang(k){
   updateCaption();
 }
 
-function getCaptionText(name, place, desc, k){
-  const hashtags = {
-    en: '#IndiaReisen #Travel #Gallery #TravelMedia',
-    de: '#IndiaReisen #Reisen #Galerie #ReiseMedia',
-    es: '#IndiaReisen #Viajes #Galería #MediaDeViaje',
-    pt: '#IndiaReisen #Viagem #Galeria #MidiaDeViagem'
+function getOneLineCaption(name, place, desc, k){
+  const n = name || 'Name';
+  const p = place || 'Place';
+  const d = desc || 'Small description';
+
+  const templates = {
+    en: `${n} in ${p} — ${d}`,
+    de: `${n} in ${p} — ${d}`,
+    es: `${n} en ${p} — ${d}`,
+    pt: `${n} em ${p} — ${d}`
   };
+
+  return templates[k];
+}
+
+function getFullCaption(name, place, desc, k){
   const location = place || 'Place';
   const title = name || 'Name';
   const description = desc || 'Small description';
   const slug = safeSlug(location);
 
   const body = {
-    en: `${title} in ${location}\n${description}\nA refined travel moment presented in a clean gallery format for India Reisen Media Site.`,
-    de: `${title} in ${location}\n${description}\nEin fein präsentierter Reisemoment im klaren Galerieformat für India Reisen Media Site.`,
-    es: `${title} en ${location}\n${description}\nUn momento de viaje presentado con estilo en formato de galería para India Reisen Media Site.`,
-    pt: `${title} em ${location}\n${description}\nUm momento de viagem apresentado em formato de galeria para a India Reisen Media Site.`
+    en: `${title} in ${location}\n${description}\nA refined travel moment presented in a polished gallery style, capturing the atmosphere, character, and visual appeal of the destination.`,
+    de: `${title} in ${location}\n${description}\nEin edel präsentierter Reisemoment im stilvollen Galerieformat, der Atmosphäre, Charakter und visuelle Wirkung des Reiseziels einfängt.`,
+    es: `${title} en ${location}\n${description}\nUn momento de viaje presentado con un estilo de galería elegante, capturando la atmósfera, el carácter y el atractivo visual del destino.`,
+    pt: `${title} em ${location}\n${description}\nUm momento de viagem apresentado em estilo de galeria refinado, capturando a atmosfera, o caráter e o apelo visual do destino.`
+  };
+
+  const hashtags = {
+    en: '#IndiaReisen #Travel #Gallery #TravelMedia',
+    de: '#IndiaReisen #Reisen #Galerie #ReiseMedia',
+    es: '#IndiaReisen #Viajes #Galería #MediaDeViaje',
+    pt: '#IndiaReisen #Viagem #Galeria #MidiaDeViagem'
   };
 
   return `${body[k]}\n${hashtags[k]}${slug ? ' #' + slug : ''}`;
@@ -483,10 +571,21 @@ function getCaptionText(name, place, desc, k){
 
 function updateCaption(){
   const k = captionLang.value || lang;
-  pvName.textContent = nameEl.value || 'Name';
-  pvPlace.textContent = placeEl.value || 'Place';
-  pvDesc.textContent = descEl.value || 'Small detailed written post appears here.';
-  pvCaption.textContent = getCaptionText(nameEl.value, placeEl.value, descEl.value, k);
+  const name = nameEl.value || 'Name';
+  const place = placeEl.value || 'Place';
+  const desc = descEl.value || 'Small detailed written post appears here.';
+
+  const oneLine = getOneLineCaption(name, place, desc, k);
+  const full = getFullCaption(name, place, desc, k);
+
+  pvName.textContent = name;
+  pvPlace.textContent = place;
+  pvDesc.textContent = desc;
+  pvCaption.textContent = full;
+
+  ovName.textContent = name;
+  ovPlace.textContent = place;
+  ovCaption.textContent = oneLine;
 }
 
 pick.onclick = () => file.click();
@@ -494,8 +593,10 @@ pick.onclick = () => file.click();
 file.onchange = e => {
   const f = e.target.files && e.target.files[0];
   if(!f) return;
+
   const u = URL.createObjectURL(f);
   ph.style.display = 'none';
+  overlay.style.display = 'flex';
   img.style.display = 'none';
   vid.style.display = 'none';
 
@@ -515,7 +616,8 @@ refreshBtn.onclick = updateCaption;
 copyBtn.onclick = async () => {
   try {
     await navigator.clipboard.writeText(pvCaption.textContent);
-    copyBtn.textContent = lang === 'de' ? 'Kopiert' : lang === 'es' ? 'Copiado' : lang === 'pt' ? 'Copiado' : 'Copied';
+    const saved = lang === 'de' ? 'Kopiert' : lang === 'es' ? 'Copiado' : lang === 'pt' ? 'Copiado' : 'Copied';
+    copyBtn.textContent = saved;
     setTimeout(() => setLang(lang), 1200);
   } catch (e) {
     alert('Copy failed');
