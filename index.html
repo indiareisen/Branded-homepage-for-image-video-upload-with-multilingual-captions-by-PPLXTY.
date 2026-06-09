@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>India Reisen Media Site</title>
+<style>
+:root{
+  --pink:#ea2e7f;
+  --pink2:#ff4f9a;
+  --bg:#f7f2f7;
+  --text:#2b2430;
+  --muted:#6b6471;
+  --card:#ffffff;
+  --line:#eadfea;
+  --shadow:0 10px 30px rgba(80,30,60,.08);
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:Inter,Arial,sans-serif;
+  background:linear-gradient(180deg,#ffffff 0%, var(--bg) 100%);
+  color:var(--text);
+}
+
+header{
+  max-width:1200px;
+  margin:0 auto;
+  padding:28px 24px 12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:18px;
+  flex-wrap:wrap;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  min-width:280px;
+}
+
+.brand img{
+  width:64px;
+  height:64px;
+  object-fit:contain;
+  border-radius:14px;
+  background:#fff;
+  box-shadow:var(--shadow);
+}
+
+.brand h1{
+  margin:0;
+  font-size:28px;
+  line-height:1.1;
+  color:var(--pink);
+  letter-spacing:.2px;
+}
+
+.brand p{
+  margin:4px 0 0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.4;
+}
+
+.langs{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  gap:8px;
+}
+
+.langs button{
+  border:1px solid var(--line);
+  background:#fff;
+  color:var(--text);
+  padding:10px 14px;
+  border-radius:999px;
+  cursor:pointer;
+  font-weight:700;
+  transition:.2s ease;
+}
+
+.langs button:hover{
+  transform:translateY(-1px);
+  border-color:var(--pink2);
+}
+
+.langs button.active,
+.primary{
+  background:var(--pink);
+  color:#fff;
+  border-color:var(--pink);
+}
+
+main{
+  max-width:1200px;
+  margin:0 auto;
+  padding:12px 24px 40px;
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:22px;
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:24px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+
+.media{
+  min-height:540px;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#fff 0%, #fde9f2 100%);
+}
+
+.placeholder{
+  border:2px dashed #ebb5cc;
+  border-radius:20px;
+  padding:26px 30px;
+  color:#b25b84;
+  text-align:center;
+  max-width:80%;
+  background:rgba(255,255,255,.5);
+  backdrop-filter:blur(4px);
+}
+
+.placeholder h2{
+  margin:0 0 10px;
+  color:var(--pink);
+  font-size:28px;
+}
+
+.placeholder p{
+  margin:0 0 16px;
+  color:#7b6171;
+  line-height:1.6;
+}
+
+.media img,
+.media video{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:none;
+}
+
+.watermark{
+  position:absolute;
+  right:18px;
+  bottom:18px;
+  width:150px;
+  opacity:.18;
+  pointer-events:none;
+  filter:saturate(.9);
+}
+
+.panel{
+  padding:22px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+input, textarea, select{
+  width:100%;
+  padding:13px 14px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  font:inherit;
+  background:#fff;
+  color:var(--text);
+  outline:none;
+}
+
+input:focus, textarea:focus, select:focus{
+  border-color:var(--pink2);
+  box-shadow:0 0 0 3px rgba(234,46,127,.12);
+}
+
+textarea{
+  min-height:110px;
+  resize:vertical;
+  margin-top:12px;
+}
+
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+
+button.primary{
+  padding:12px 16px;
+  border:none;
+  border-radius:14px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+button.primary:hover{
+  transform:translateY(-1px);
+  background:#d82671;
+}
+
+.preview{
+  margin-top:18px;
+  padding:16px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:#fff7fb;
+}
+
+.preview h2,
+.preview h3{
+  margin:0 0 8px;
+}
+
+.place{
+  color:var(--pink);
+  font-weight:800;
+  margin-bottom:10px;
+}
+
+.caption{
+  white-space:pre-wrap;
+  line-height:1.6;
+  color:#4b4550;
+  margin:0;
+}
+
+.small{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.5;
+}
+
+footer{
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 24px 32px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.hidden{
+  display:none !important;
+}
+
+@media (max-width:900px){
+  main{
+    grid-template-columns:1fr;
+  }
+  .media{
+    min-height:360px;
+  }
+  .grid{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <img src="LOGO-4096.jpg" alt="India Reisen logo">
+    <div>
+      <h1>India Reisen Media Site</h1>
+      <p id="subtitle">Branded media gallery for images and videos with multilingual captions.</p>
+    </div>
+  </div>
+
+  <div class="langs" id="langs"></div>
+</header>
+
+<main>
+  <section class="card media" aria-label="Media preview area">
+    <input id="file" type="file" accept="image/*,video/*" class="hidden">
+    <div class="placeholder" id="ph">
+      <h2 id="dropTitle">Upload image or video</h2>
+      <p id="dropText">
+        Choose a file to preview it on the browser, with logo watermark and caption preview.
+      </p>
+      <button class="primary" id="pick" type="button">Choose Media</button>
+    </div>
+
+    <img id="previewImg" alt="Preview image">
+    <video id="previewVid" controls></video>
+    <img class="watermark" src="LOGO-4096.jpg" alt="Watermark logo">
+  </section>
+
+  <section class="card panel">
+    <div class="grid">
+      <input id="name" placeholder="Name" aria-label="Name">
+      <input id="place" placeholder="Place" aria-label="Place">
+    </div>
+
+    <textarea id="desc" placeholder="Small description" aria-label="Small description"></textarea>
+
+    <div class="grid" style="margin-top:12px;">
+      <select id="captionLang" aria-label="Caption language">
+        <option value="en">English</option>
+        <option value="de">Deutsch</option>
+        <option value="es">Español</option>
+        <option value="pt">Português</option>
+      </select>
+      <button class="primary" id="refresh" type="button">Generate Caption</button>
+    </div>
+
+    <div class="preview">
+      <h2 id="pvName">Name</h2>
+      <div class="place" id="pvPlace">Place</div>
+      <p id="pvDesc" class="caption">Small detailed written post appears here.</p>
+
+      <h3 id="captionHead">Caption</h3>
+      <div id="pvCaption" class="caption"></div>
+
+      <div class="actions">
+        <button class="primary" id="copy" type="button">Copy Caption</button>
+      </div>
+
+      <p class="small">
+        The preview is designed for a static gallery post format with logo branding and multilingual output.
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Static landing page ready for GitHub Pages, Netlify, or any static host.
+</footer>
+
+<script>
+const i18n = {
+  en: {
+    subtitle: 'Branded media gallery for images and videos with multilingual captions.',
+    dropTitle: 'Upload image or video',
+    dropText: 'Choose a file to preview it on the browser, with logo watermark and caption preview.',
+    choose: 'Choose Media',
+    captionHead: 'Caption',
+    name: 'Name',
+    place: 'Place',
+    desc: 'Small description',
+    generate: 'Generate Caption',
+    copy: 'Copy Caption'
+  },
+  de: {
+    subtitle: 'Marken-Galerie für Bilder und Videos mit mehrsprachigen Bildunterschriften.',
+    dropTitle: 'Bild oder Video hochladen',
+    dropText: 'Wähle eine Datei für die Browser-Vorschau mit Logo-Wasserzeichen und Caption.',
+    choose: 'Medien wählen',
+    captionHead: 'Bildunterschrift',
+    name: 'Name',
+    place: 'Ort',
+    desc: 'Kurze Beschreibung',
+    generate: 'Bildunterschrift erzeugen',
+    copy: 'Bildunterschrift kopieren'
+  },
+  es: {
+    subtitle: 'Galería de marca para imágenes y videos con subtítulos multilingües.',
+    dropTitle: 'Sube imagen o video',
+    dropText: 'Elige un archivo para verlo en el navegador con marca de agua y vista previa.',
+    choose: 'Elegir medio',
+    captionHead: 'Pie de foto',
+    name: 'Nombre',
+    place: 'Lugar',
+    desc: 'Breve descripción',
+    generate: 'Generar subtítulo',
+    copy: 'Copiar subtítulo'
+  },
+  pt: {
+    subtitle: 'Galeria da marca para imagens e vídeos com legendas multilíngues.',
+    dropTitle: 'Enviar imagem ou vídeo',
+    dropText: 'Escolha um arquivo para pré-visualização no navegador com marca d’água e legenda.',
+    choose: 'Escolher mídia',
+    captionHead: 'Legenda',
+    name: 'Nome',
+    place: 'Local',
+    desc: 'Pequena descrição',
+    generate: 'Gerar legenda',
+    copy: 'Copiar legenda'
+  }
+};
+
+let lang = 'en';
+
+const langs = document.getElementById('langs');
+['en','de','es','pt'].forEach(k => {
+  const b = document.createElement('button');
+  b.textContent = k.toUpperCase();
+  b.onclick = () => setLang(k);
+  langs.appendChild(b);
+});
+
+const file = document.getElementById('file');
+const pick = document.getElementById('pick');
+const img = document.getElementById('previewImg');
+const vid = document.getElementById('previewVid');
+const ph = document.getElementById('ph');
+
+const nameEl = document.getElementById('name');
+const placeEl = document.getElementById('place');
+const descEl = document.getElementById('desc');
+const captionLang = document.getElementById('captionLang');
+
+const subtitle = document.getElementById('subtitle');
+const dropTitle = document.getElementById('dropTitle');
+const dropText = document.getElementById('dropText');
+const captionHead = document.getElementById('captionHead');
+const pvName = document.getElementById('pvName');
+const pvPlace = document.getElementById('pvPlace');
+const pvDesc = document.getElementById('pvDesc');
+const pvCaption = document.getElementById('pvCaption');
+const refreshBtn = document.getElementById('refresh');
+const copyBtn = document.getElementById('copy');
+
+function safeSlug(text){
+  return (text || '')
+    .trim()
+    .replace(/\s+/g,'')
+    .replace(/[^\p{L}\p{N}_-]+/gu,'');
+}
+
+function setLang(k){
+  lang = k;
+  document.querySelectorAll('.langs button').forEach((b,i) => {
+    b.classList.toggle('active', ['en','de','es','pt'][i] === k);
+  });
+
+  const t = i18n[k];
+  subtitle.textContent = t.subtitle;
+  dropTitle.textContent = t.dropTitle;
+  dropText.textContent = t.dropText;
+  pick.textContent = t.choose;
+  captionHead.textContent = t.captionHead;
+  nameEl.placeholder = t.name;
+  placeEl.placeholder = t.place;
+  descEl.placeholder = t.desc;
+  refreshBtn.textContent = t.generate;
+  copyBtn.textContent = t.copy;
+
+  captionLang.value = k;
+  updateCaption();
+}
+
+function getCaptionText(name, place, desc, k){
+  const hashtags = {
+    en: '#IndiaReisen #Travel #Gallery #TravelMedia',
+    de: '#IndiaReisen #Reisen #Galerie #ReiseMedia',
+    es: '#IndiaReisen #Viajes #Galería #MediaDeViaje',
+    pt: '#IndiaReisen #Viagem #Galeria #MidiaDeViagem'
+  };
+  const location = place || 'Place';
+  const title = name || 'Name';
+  const description = desc || 'Small description';
+  const slug = safeSlug(location);
+
+  const body = {
+    en: `${title} in ${location}\n${description}\nA refined travel moment presented in a clean gallery format for India Reisen Media Site.`,
+    de: `${title} in ${location}\n${description}\nEin fein präsentierter Reisemoment im klaren Galerieformat für India Reisen Media Site.`,
+    es: `${title} en ${location}\n${description}\nUn momento de viaje presentado con estilo en formato de galería para India Reisen Media Site.`,
+    pt: `${title} em ${location}\n${description}\nUm momento de viagem apresentado em formato de galeria para a India Reisen Media Site.`
+  };
+
+  return `${body[k]}\n${hashtags[k]}${slug ? ' #' + slug : ''}`;
+}
+
+function updateCaption(){
+  const k = captionLang.value || lang;
+  pvName.textContent = nameEl.value || 'Name';
+  pvPlace.textContent = placeEl.value || 'Place';
+  pvDesc.textContent = descEl.value || 'Small detailed written post appears here.';
+  pvCaption.textContent = getCaptionText(nameEl.value, placeEl.value, descEl.value, k);
+}
+
+pick.onclick = () => file.click();
+
+file.onchange = e => {
+  const f = e.target.files && e.target.files[0];
+  if(!f) return;
+  const u = URL.createObjectURL(f);
+  ph.style.display = 'none';
+  img.style.display = 'none';
+  vid.style.display = 'none';
+
+  if(f.type.startsWith('image/')){
+    img.src = u;
+    img.style.display = 'block';
+  } else {
+    vid.src = u;
+    vid.style.display = 'block';
+  }
+};
+
+[nameEl, placeEl, descEl].forEach(el => el.addEventListener('input', updateCaption));
+captionLang.addEventListener('change', updateCaption);
+refreshBtn.onclick = updateCaption;
+
+copyBtn.onclick = async () => {
+  try {
+    await navigator.clipboard.writeText(pvCaption.textContent);
+    copyBtn.textContent = lang === 'de' ? 'Kopiert' : lang === 'es' ? 'Copiado' : lang === 'pt' ? 'Copiado' : 'Copied';
+    setTimeout(() => setLang(lang), 1200);
+  } catch (e) {
+    alert('Copy failed');
+  }
+};
+
+setLang('en');
+updateCaption();
+</script>
+</body>
+</html>
